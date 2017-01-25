@@ -1,0 +1,92 @@
+<head>
+<title>alior-graph</title </head>
+
+<body>
+    <h1>CSS div with scrollbar; microsoft money</h1> 
+    {{> controlPanel}} 
+    {{> transactionsTable}}
+    {{> info}}
+</body>
+
+<template name="transactionsTable">
+    {{#with summaryData}}
+      {{> summary}}
+    {{/with}}
+
+  <table class="responstable">
+    {{> headers}}
+    {{> filters}}
+    {{#each transactions}} {{> transaction}} {{/each}}
+  </table>
+</template>
+
+<template name="summary">
+  <table class="summary">
+    <tr><td></td><td></td><td>Year</td><td></td><td>Month (/12)</td><td>Transaction (/Count)</td></tr>
+    <tr><td>in:</td><td>{{formatMoney in}}</td><td>({{inCount}})</td><td>{{formatMoney in12m}}</td><td>({{inCount12m}})</td><td>{{formatMoney inAvg}}</td></tr>
+    <tr><td>out:</td><td>{{formatMoney out}}</td><td>({{outCount}})</td><td>{{formatMoney out12m}}</td><td>({{outCount12m}})</td><td>{{formatMoney outAvg}}</td></tr>
+    <tr><td>total:</td><td>{{formatMoney total}}</td><td>({{totalCount}})</td>{{formatMoney total12m}}<td>({{totalCount12m}})</td><td>{{formatMoney totalAvg}}</td></tr>
+  </table>
+</template>
+
+<template name="headers">
+  <tr>
+  {{> sortableHeader name="bookDate"}}
+  {{> sortableHeader name="transactionDate"}}
+  {{> sortableHeader name="from"}}
+  {{> sortableHeader name="to"}}
+  {{> sortableHeader name="title"}}
+  {{> sortableHeader name="description"}}
+  {{> sortableHeader name="value"}}
+  <!--{{> sortableHeader name="currency"}}-->
+  {{> sortableHeader name="balance"}}
+  </tr>
+</template>
+<template name="sortableHeader">
+    <th><a href="#" class="header" data-headerName="{{name}}">{{name}} {{sortOrder}}</a></th>
+</template>
+<template name="filters">
+  <tr>
+  <td>bookDate</td>
+  <td>transactionDate</td>
+  {{> textFilter name="from"}}
+  {{> textFilter name="to"}}
+  {{> textFilter name="title"}}
+  {{> textFilter name="description"}}
+  <td>value</td>
+  <!--<td>currency</td>-->
+  <td>balance</td>
+  </tr>
+</template>
+<template name="textFilter">
+    <td><input type="text" name="{{name}}" class="filter"/></td>
+</template>
+
+<template name="transaction">
+  <tr>
+  <td>{{formatTime bookDate}}</td>
+  <td>{{formatTime transactionDate}}</td>
+  <td>{{from}}</td>
+  <td>{{to}}</td>
+  <td>{{title}}</td>
+  <td>{{description}}</td>
+  <td>{{formatMoney value}}</td>
+  <!--<td>{{currency}}</td>-->
+  <td>{{balance}}</td>
+  </tr>
+</template>
+
+<template name="controlPanel">
+  <button class="load">Load data from file</button>
+  <button class="clear">Clear all</button>
+</template>
+
+<template name="info">
+  <h2>Learn Meteor!</h2>
+  <ul>
+    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
+    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
+    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
+    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
+  </ul>
+</template>
