@@ -144,30 +144,42 @@ Template.textFilter.events({
 })
 
 Template.taggingRules.events({
-    'click button.addRule' (event, instance) {
-      var ruleName=$("input[name='ruleName']").val();
-      var tag=$("input[name='tag']").val();
-      console.log("add rule: "+ruleName+" "+tag+JSON.stringify(State.getFilters()));
+  'click button.addRule' (event, instance) {
+    var ruleName = $("input[name='ruleName']").val();
+    var tag = $("input[name='tag']").val();
+    console.log("add rule: " + ruleName + " " + tag + JSON.stringify(State.getFilters()));
 
-      var rule = {
-        tag: tag,
-        name: ruleName,
-        filters: State.getFilters()
-      };
+    var rule = {
+      tag: tag,
+      name: ruleName,
+      filters: State.getFilters()
+    };
 
-      TaggingRules.insert(rule);
+    TaggingRules.insert(rule);
+
+    $("input[name='ruleName']").val('');
+    $("input[name='tag']").val('');
   },
-  'click li'(event, instance){
-    const id=event.target.dataset.id;
-    console.log("clicked li "+id);
+  'click li' (event, instance) {
+    const id = event.target.dataset.id;
+    console.log("clicked li " + id);
 
-    const rule=TaggingRules.findOne({_id: id});
-    State.setFilters(rule.filters);
+    const rule = TaggingRules.findOne({
+      _id: id
+    });
+    applyFilters(rule.filters);
   }
 })
 
+function applyFilters(filters) {
+  _.keys(filters.textFilters).forEach(key => {
+    $("input[name='" + key + "']").val(filters.textFilters[key]);
+  })
+  State.setFilters(filters);
+}
+
 Template.taggingRules.helpers({
-  rules(){
+  rules() {
     return TaggingRules.find({});
   }
 })

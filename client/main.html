@@ -14,7 +14,8 @@
     {{/with}}
 
   {{> taggingRules }}
-
+  <button class="resetFilters">Reset filters</button>
+  
   <table class="responstable">
     {{> headers}}
     {{> filters}}
@@ -85,22 +86,22 @@
 
 <template name="taggingRules">
   <p align="right">
-    Tagging rules
-    <input type="text" name="tag" placeholder="tag"/>
-    <input type="text" name="ruleName" placeholder="rule name"/>
-    <button class="addRule">Add rule</button>
-    <br/>
-    Rules: 
+    Tagging rules:
     <ul class="taggingRules">
       {{#each rules}}
         {{> rule}}
       {{/each}}
     </ul>
+
+    <br/>
+    <input type="text" name="tag" placeholder="tag"/>
+    <input type="text" name="ruleName" placeholder="rule name"/>
+    <button class="addRule">Add rule</button>
   </p>
 </template>
 
 <template name="rule">
-  <li data-id="{{_id}}">{{tag}} {{name}}</li>
+  <li data-id="{{_id}}">{{tag}} ({{name}})</li>
 </template>
 <template name="info">
   <h2>Learn Meteor!</h2>
