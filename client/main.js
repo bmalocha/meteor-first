@@ -27,11 +27,13 @@ function getTransactions() {
   var filtering = {};
   if (filters) {
     var fieldName = "description";
-    var textFilters = filters.textFilters;
+    var textFilters = filters.textFilters || {};
     var textConditions = _.keys(textFilters).map(function (fieldName) {
       return "this." + fieldName + ".toLowerCase().indexOf('" + textFilters[fieldName] + "')!=-1";
     });
-    filtering["$where"] = _.values(textConditions).join(" && ");
+    if(textConditions.length>0){
+      filtering["$where"] = _.values(textConditions).join(" && ");
+    }
   }
 
 
@@ -86,6 +88,13 @@ Template.transactionsTable.helpers({
 
     return stats;
   },
+});
+
+Template.transactionsTable.events({
+  'click button.resetFilters' (event, instance){
+    $("input.filter").val('');
+    State.setFilters({});
+  }
 });
 
 Template.controlPanel.events({
