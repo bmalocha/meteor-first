@@ -1,3 +1,14 @@
+ul.taggingRules{
+  float: right;
+}
+ul.taggingRules li{
+  cursor: pointer;
+}
+
+ul.taggingRules li:hover{
+  background: orange;
+}
+
 .summary{
  margin:auto;
  text-align: right; 

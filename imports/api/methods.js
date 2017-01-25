@@ -1,4 +1,5 @@
 import { Transactions } from './transactions.js';
+import { TaggingRules } from './taggingRules.js';
 
 var headers;
 Meteor.methods({

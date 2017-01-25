@@ -2,7 +2,7 @@
 <title>alior-graph</title </head>
 
 <body>
-    <h1>CSS div with scrollbar; microsoft money</h1> 
+    <h1>tagging</h1> 
     {{> controlPanel}} 
     {{> transactionsTable}}
     {{> info}}
@@ -12,6 +12,8 @@
     {{#with summaryData}}
       {{> summary}}
     {{/with}}
+
+  {{> taggingRules }}
 
   <table class="responstable">
     {{> headers}}
@@ -81,6 +83,25 @@
   <button class="clear">Clear all</button>
 </template>
 
+<template name="taggingRules">
+  <p align="right">
+    Tagging rules
+    <input type="text" name="tag" placeholder="tag"/>
+    <input type="text" name="ruleName" placeholder="rule name"/>
+    <button class="addRule">Add rule</button>
+    <br/>
+    Rules: 
+    <ul class="taggingRules">
+      {{#each rules}}
+        {{> rule}}
+      {{/each}}
+    </ul>
+  </p>
+</template>
+
+<template name="rule">
+  <li data-id="{{_id}}">{{tag}} {{name}}</li>
+</template>
 <template name="info">
   <h2>Learn Meteor!</h2>
   <ul>
