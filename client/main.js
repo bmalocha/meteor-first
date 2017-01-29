@@ -2,11 +2,11 @@ import {
   Template
 } from 'meteor/templating';
 import {
-  ReactiveVar
-} from 'meteor/reactive-var';
-import {
   State
 } from './state.js';
+import {
+  SummaryData
+} from './summary.js';
 
 import {
   Transactions
@@ -15,12 +15,13 @@ import {
 import '../imports/api/methods.js';
 import './viewHelpers.js';
 import './tagging.js';
+import './headersFilters.js';
+import './controlPanel.js';
 
 import './main.html';
 import './summary.html';
 import './table.html';
 import './tagging.html';
-
 
 function getTransactions() {
   var filters = State.getFilters();
@@ -35,7 +36,6 @@ function getTransactions() {
       filtering["$where"] = _.values(textConditions).join(" && ");
     }
   }
-
 
   var sort = State.getSort();
   if (!sort || !sort.order || sort.order == "none") {
@@ -56,37 +56,7 @@ Template.transactionsTable.helpers({
   },
   summaryData() {
     var transactions = getTransactions();
-    var stats = { in: 0,
-      inCount: 0,
-      out: 0,
-      outCount: 0,
-      total: 0,
-      totalCount: 0
-    }
-
-    transactions.forEach(transaction => {
-      if (transaction.value > 0) {
-        stats.inCount++;
-        stats.in += transaction.value;
-      } else {
-        stats.outCount++;
-        stats.out += transaction.value;
-      }
-      stats.totalCount++;
-      stats.total += transaction.value;
-    });
-    stats.inAvg = stats.in / stats.inCount;
-    stats.outAvg = stats.out / stats.outCount;
-    stats.totalAvg = stats.total / stats.totalCount;
-
-    stats.in12m = stats.in / 12;
-    stats.inCount12m = Math.ceil(stats.inCount / 12);
-    stats.out12m = stats.out / 12;
-    stats.outCount12m = Math.ceil(stats.outCount / 12);
-    stats.total12m = stats.total / 12;
-    stats.totalCount12m = Math.ceil(stats.totalCount / 12);
-
-    return stats;
+    return SummaryData(transactions);
   },
 });
 
@@ -97,62 +67,4 @@ Template.transactionsTable.events({
   }
 });
 
-Template.controlPanel.events({
-  'click button.load' (event, instance) {
-    Meteor.call('loadData');
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-    console.log(Meteor.call('getHeaders'));
-  },
-  'click button.clear' (event, instance) {
-    Meteor.call('clearAll');
-    console.log("removed");
-  },
-});
-
-Template.sortableHeader.events({
-  'click .header' (event, instance) {
-    event.preventDefault();
-    var currentHeaderName = event.target.dataset.headername;
-    var sortObj = State.getSort();
-
-    var sort = (sortObj || {}).order;
-    if (!sort || sort == "none" || !isHeaderSorted(sortObj, currentHeaderName)) {
-      sort = "desc";
-    } else if (sort == "desc") {
-      sort = "asc";
-    } else if (sort == "asc") {
-      sort = "none";
-    }
-    State.setSort({
-      column: currentHeaderName,
-      order: sort
-    });
-  },
-});
-
-Template.sortableHeader.helpers({
-  sortOrder() {
-    var sort = State.getSort();
-    return isHeaderSorted(sort, Template.instance().data.name) ? sort.order : "";
-  }
-})
-
-Template.textFilter.events({
-  'change input.filter' (event, instance) {
-    var filterName = instance.data.name;
-    var value = event.target.value;
-
-    var filters = State.getFilters() || {};
-    filters.textFilters = filters.textFilters || {};
-    filters.textFilters[filterName] = value;
-    State.setFilters(filters);
-
-    console.log("changed");
-  }
-})
-
-function isHeaderSorted(sort, headerName) {
-  return !!sort && sort.order != "none" && sort.column == headerName;
-}
 
