@@ -11,16 +11,16 @@ import {
 import {
   Transactions
 } from '../imports/api/transactions.js';
-import {
-  TaggingRules
-} from '../imports/api/taggingRules.js';
-
 
 import '../imports/api/methods.js';
+import './viewHelpers.js';
+import './tagging.js';
 
 import './main.html';
+import './summary.html';
+import './table.html';
+import './tagging.html';
 
-registerHelpers();
 
 function getTransactions() {
   var filters = State.getFilters();
@@ -31,7 +31,7 @@ function getTransactions() {
     var textConditions = _.keys(textFilters).map(function (fieldName) {
       return "this." + fieldName + ".toLowerCase().indexOf('" + textFilters[fieldName] + "')!=-1";
     });
-    if(textConditions.length>0){
+    if (textConditions.length > 0) {
       filtering["$where"] = _.values(textConditions).join(" && ");
     }
   }
@@ -91,7 +91,7 @@ Template.transactionsTable.helpers({
 });
 
 Template.transactionsTable.events({
-  'click button.resetFilters' (event, instance){
+  'click button.resetFilters' (event, instance) {
     $("input.filter").val('');
     State.setFilters({});
   }
@@ -152,61 +152,7 @@ Template.textFilter.events({
   }
 })
 
-Template.taggingRules.events({
-  'click button.addRule' (event, instance) {
-    var ruleName = $("input[name='ruleName']").val();
-    var tag = $("input[name='tag']").val();
-    console.log("add rule: " + ruleName + " " + tag + JSON.stringify(State.getFilters()));
-
-    var rule = {
-      tag: tag,
-      name: ruleName,
-      filters: State.getFilters()
-    };
-
-    TaggingRules.insert(rule);
-
-    $("input[name='ruleName']").val('');
-    $("input[name='tag']").val('');
-  },
-  'click li' (event, instance) {
-    const id = event.target.dataset.id;
-    console.log("clicked li " + id);
-
-    const rule = TaggingRules.findOne({
-      _id: id
-    });
-    applyFilters(rule.filters);
-  }
-})
-
-function applyFilters(filters) {
-  _.keys(filters.textFilters).forEach(key => {
-    $("input[name='" + key + "']").val(filters.textFilters[key]);
-  })
-  State.setFilters(filters);
-}
-
-Template.taggingRules.helpers({
-  rules() {
-    return TaggingRules.find({});
-  }
-})
-
 function isHeaderSorted(sort, headerName) {
   return !!sort && sort.order != "none" && sort.column == headerName;
 }
 
-function registerHelpers() {
-  UI.registerHelper('formatTime', function (context, options) {
-    if (context) {
-      return moment(context, "YYYYMMDD").format("MMM Do YY");
-    }
-  });
-
-  UI.registerHelper('formatMoney', function (context, options) {
-    if (context) {
-      return context.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-    }
-  });
-}

@@ -1,0 +1,47 @@
+
+<template name="headers">
+  <tr>
+  {{> sortableHeader name="bookDate"}}
+  {{> sortableHeader name="transactionDate"}}
+  {{> sortableHeader name="from"}}
+  {{> sortableHeader name="to"}}
+  {{> sortableHeader name="title"}}
+  {{> sortableHeader name="description"}}
+  {{> sortableHeader name="value"}}
+  <!--{{> sortableHeader name="currency"}}-->
+  {{> sortableHeader name="balance"}}
+  </tr>
+</template>
+<template name="sortableHeader">
+    <th><a href="#" class="header" data-headerName="{{name}}">{{name}} {{sortOrder}}</a></th>
+</template>
+<template name="filters">
+  <tr>
+  <td>bookDate</td>
+  <td>transactionDate</td>
+  {{> textFilter name="from"}}
+  {{> textFilter name="to"}}
+  {{> textFilter name="title"}}
+  {{> textFilter name="description"}}
+  <td>value</td>
+  <!--<td>currency</td>-->
+  <td>balance</td>
+  </tr>
+</template>
+<template name="textFilter">
+    <td><input type="text" name="{{name}}" class="filter"/></td>
+</template>
+
+<template name="transaction">
+  <tr>
+  <td>{{formatTime bookDate}}</td>
+  <td>{{formatTime transactionDate}}</td>
+  <td>{{from}}</td>
+  <td>{{to}}</td>
+  <td>{{title}}</td>
+  <td>{{description}}</td>
+  <td>{{formatMoney value}}</td>
+  <!--<td>{{currency}}</td>-->
+  <td>{{balance}}</td>
+  </tr>
+</template>
