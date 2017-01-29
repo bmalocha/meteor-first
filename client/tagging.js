@@ -85,6 +85,7 @@ function setRules(callback) {
 }
 
 function applyFilters(filters) {
+    $("input.filter").val('');
     _.keys(filters.textFilters).forEach(key => {
         $("input[name='" + key + "']").val(filters.textFilters[key]);
     })
