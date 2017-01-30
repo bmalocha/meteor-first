@@ -1,5 +1,9 @@
-import { Transactions } from './transactions.js';
-import { TaggingRules } from './taggingRules.js';
+import {
+    Transactions
+} from './transactions.js';
+import {
+    TaggingRules
+} from './taggingRules.js';
 
 var headers;
 Meteor.methods({
@@ -29,6 +33,16 @@ Meteor.methods({
 
     'getHeaders': function () {
         return headers;
+    },
+
+    'tagTransactions': function (filtering, tag) {
+        Transactions.update(filtering, {
+            $set: {
+                tag: tag
+            }
+        }, {
+            multi: true
+        })
     }
 });
 
@@ -41,7 +55,7 @@ function transformData(data) {
         return {
             bookDate: r[0], //"Data księgowania",
             transactionDate: r[1], //"Data transakcji",
-            from: r[2],//"Nadawca",
+            from: r[2], //"Nadawca",
             to: r[3], //"Odbiorca",
             title: r[4] + " " + r[5] + " " + r[6] + " " + r[7],
             //"Tytuł płatności (linia 1)",
@@ -49,11 +63,11 @@ function transformData(data) {
             //"Tytuł płatności (linia 3)",
             //"Tytuł płatności (linia 4)",
             description: r[8], //"Opis transakcji",
-            value: parseFloat(r[9]),//"Kwota",
-            valueRaw: r[9],//"Kwota",
-            currency: r[10],//"Waluta",
-            balance: parseFloat(r[11]),//"Saldo po operacji"
-            balanceRaw: r[11]//"Saldo po operacji"
+            value: parseFloat(r[9]), //"Kwota",
+            valueRaw: r[9], //"Kwota",
+            currency: r[10], //"Waluta",
+            balance: parseFloat(r[11]), //"Saldo po operacji"
+            balanceRaw: r[11] //"Saldo po operacji"
         }
     });
 }

@@ -10,6 +10,7 @@
   {{> sortableHeader name="value"}}
   <!--{{> sortableHeader name="currency"}}-->
   {{> sortableHeader name="balance"}}
+  {{> sortableHeader name="tag"}}
   </tr>
 </template>
 <template name="sortableHeader">
@@ -26,6 +27,7 @@
   <td>value</td>
   <!--<td>currency</td>-->
   <td>balance</td>
+  {{> textFilter name="tag"}}
   </tr>
 </template>
 <template name="textFilter">
@@ -43,5 +45,6 @@
   <td>{{formatMoney value}}</td>
   <!--<td>{{currency}}</td>-->
   <td>{{balance}}</td>
+  <td>{{tag}}</td>
   </tr>
 </template>
