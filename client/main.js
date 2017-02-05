@@ -25,6 +25,7 @@ import './main.html';
 import './summary.html';
 import './table.html';
 import './tagging.html';
+import './tagTree.html';
 
 function getTransactions() {
   var filters = State.getFilters();
