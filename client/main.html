@@ -2,26 +2,47 @@
 <title>alior-graph</title </head>
 
 <body>
-    <h1>tagging</h1> 
-    {{> controlPanel}} 
-    {{> transactionsTable}}
-    {{> info}}
+    <div class="container">
+      <h1>tagging</h1> 
+      {{> controlPanel}}
+       
+      {{> transactionsTable}}
+      {{> info}}
+    </div>
 </body>
 
 <template name="transactionsTable">
-    {{#with summaryData}}
-      {{> summary}}
-    {{/with}}
+  <div class="row">
+    <div class="col-md-8">
+      {{#with summaryData}} {{> summary}} {{/with}}
+    </div>
+    <div class="col-md-4">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+          <a href="#tagging" id="tagging-tab" role="tab" data-toggle="tab" aria-controls="tagging" aria-expanded="true">Tagging rules</a>
+        </li>
+        <li role="presentation">
+          <a href="#tagTree" role="tab" id="tagTree-tab" data-toggle="tab" aria-controls="tagTree">Tag tree</a>
+        </li>
+      </ul>
+      <div class="tab-content taggingPane">
+        <div class="tab-pane fade in active" role="tabpanel" id="tagging" aria-labelledby="tagging-tab">
+          {{> taggingRules }}
+        </div>
+        <div class="tab-pane fade" role="tabpanel" id="tagTree" aria-labelledby="tagTree-tab">
+          {{> tagTree }}
+        </div>
+      </div>
+    </div>
+  </div>
 
-  {{> taggingRules }}
-  {{> tagTree }}
-  <button class="resetFilters">Reset filters</button>
-  <button class="tagTransactions">Tag transactions</button>
-  
+  <div class="row">
+    <button class="resetFilters">Reset filters</button>
+    <button class="tagTransactions">Tag transactions</button>
+  </div>
+
   <table class="responstable">
-    {{> headers}}
-    {{> filters}}
-    {{#each transactions}} {{> transaction}} {{/each}}
+    {{> headers}} {{> filters}} {{#each transactions}} {{> transaction}} {{/each}}
   </table>
 </template>
 

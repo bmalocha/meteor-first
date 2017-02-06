@@ -1,19 +1,16 @@
 <template name="taggingRules">
-  <p align="right">
     Tagging rules:
-    <ul class="taggingRules">
+    <ul class="taggingRules list-group">
       {{#each rules}}
         {{> rule}}
       {{/each}}
     </ul>
 
-    <br/>
     <input type="text" name="tag" placeholder="tag"/>
     <input type="text" name="ruleName" placeholder="rule name"/>
-    <button class="addRule">Add rule</button>
-  </p>
+    <button class="addRule btn btn-sm btn-primary">Add rule</button>  
 </template>
 
 <template name="rule">
-  <li data-id="{{_id}}">{{tag}} ({{name}})</li>
+  <li data-id="{{_id}}" class="list-group-item">{{tag}} ({{name}})</li>
 </template>

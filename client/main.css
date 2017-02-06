@@ -1,3 +1,12 @@
+.taggingPane{
+  height: 150px;
+  overflow-y: auto;
+}
+
+input.filter{
+  width: 100%;
+}
+
 ul.taggingRules{
   float: right;
 }
@@ -10,10 +19,9 @@ ul.taggingRules li:hover{
 }
 
 .summary{
- margin:auto;
  text-align: right; 
  padding: 1em;
- width: 50%;
+ width: 100%;
 }
 .summary td {
     border-bottom: 1px solid #ddd;
