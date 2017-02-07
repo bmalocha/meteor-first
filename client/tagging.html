@@ -1,14 +1,16 @@
 <template name="taggingRules">
-    Tagging rules:
-    <ul class="taggingRules list-group">
+<div class="row topBuffer bottomBuffer">
+    <input type="text" name="tag" placeholder="tag"/>
+    <input type="text" name="ruleName" placeholder="rule name"/>
+    <button class="addRule btn btn-sm btn-primary">Add rule</button> 
+</div>    
+<div class="row">
+    <ul class="taggingRules list-group taggingList">
       {{#each rules}}
         {{> rule}}
       {{/each}}
     </ul>
-
-    <input type="text" name="tag" placeholder="tag"/>
-    <input type="text" name="ruleName" placeholder="rule name"/>
-    <button class="addRule btn btn-sm btn-primary">Add rule</button>  
+</div>
 </template>
 
 <template name="rule">
