@@ -49,18 +49,22 @@ function getQuery(filters) {
   if (filters) {
     var textFilters = filters.textFilters || {};
     var textConditions = _.keys(textFilters).map(function (fieldName) {
-      if(textFilters[fieldName]){
-        return "typeof this." + fieldName+"!=='undefined' && this." + fieldName + ".toLowerCase().indexOf('" + textFilters[fieldName] + "')!=-1";
+      if (textFilters[fieldName]) {
+        return "typeof this." + fieldName + "!=='undefined' && this." + fieldName + ".toLowerCase().indexOf('" + textFilters[fieldName] + "')!=-1";
       } else {
         return "true";
       }
     });
 
-    if(filters.tagFilter){
-      var tagCondition;
-      tagCondition = "typeof this.tag!=='undefined' && "+JSON.stringify(filters.tagFilter)+".indexOf(this.tag.toLowerCase())!=-1";
+    if (filters.tagFilter) {
+      var tagCondition = "typeof this.tag!=='undefined' && " + JSON.stringify(filters.tagFilter) + ".indexOf(this.tag.toLowerCase())!=-1";
       textConditions = textConditions.concat(tagCondition);
       console.log("Appended tag condition:", tagCondition)
+    }
+
+    if(filters.untaggedOnly){
+      var tagCondition = "typeof this.tag==='undefined'";
+      textConditions = textConditions.concat(tagCondition);
     }
 
     if (textConditions.length > 0) {
@@ -92,9 +96,14 @@ Template.transactionsTable.events({
       rules.rules.reverse().forEach(rule => {
         var filtering = getQuery(rule.filters);
         // console.log(JSON.stringify(filtering));
-        Meteor.call('tagTransactions', filtering, rule.tag);        
+        Meteor.call('tagTransactions', filtering, rule.tag);
       });
       console.log('tagging finished');
     }
+  },
+  'click button.showUntaggedOnly' (event, instance) {
+    var filters = State.getFilters() || {};
+    filters.untaggedOnly = true;
+    State.setFilters(filters);
   }
 });

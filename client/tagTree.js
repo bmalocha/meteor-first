@@ -43,7 +43,6 @@ Template.tagTree.events({
 
 function applyFiltering(tags){
     var filters = State.getFilters() || {};
-    filters.tagFilter = filters.tagFilter || {};
     filters.tagFilter = tags;
     State.setFilters(filters);
 }
