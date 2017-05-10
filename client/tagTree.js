@@ -1,6 +1,9 @@
 import {
     TaggingRules
 } from '../imports/api/taggingRules.js';
+import {
+  State
+} from './state.js';
 
 const ALL_NODE_ID = 1;
 const UNASSIGNED_NODE_ID = 2;
@@ -34,8 +37,16 @@ Template.tagTree.events({
         var node = tree.tree('getSelectedNode');
         var tags = flattenTags(node);
         console.log("Selected ", node," flat:", tags);
+        applyFiltering(tags);
     }
 });
+
+function applyFiltering(tags){
+    var filters = State.getFilters() || {};
+    filters.tagFilter = filters.tagFilter || {};
+    filters.tagFilter = tags;
+    State.setFilters(filters);
+}
 
 function flattenTags(node){
     var result=[node.name];

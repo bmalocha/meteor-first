@@ -55,6 +55,14 @@ function getQuery(filters) {
         return "true";
       }
     });
+
+    if(filters.tagFilter){
+      var tagCondition;
+      tagCondition = "typeof this.tag!=='undefined' && "+JSON.stringify(filters.tagFilter)+".indexOf(this.tag.toLowerCase())!=-1";
+      textConditions = textConditions.concat(tagCondition);
+      console.log("Appended tag condition:", tagCondition)
+    }
+
     if (textConditions.length > 0) {
       filtering["$where"] = _.values(textConditions).join(" && ");
     }
